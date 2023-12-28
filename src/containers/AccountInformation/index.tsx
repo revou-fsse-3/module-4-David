@@ -1,60 +1,67 @@
-import { Card, Input, Button, Heading, Text } from "../../components";
+import { Input, Text, Button, Card } from "../../components";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-interface Props {
-  onNext?: () => void;
-  handleBack: () => void;
-}
-
-const AccountInformation = ({ handleBack }: Props) => {
+const AccountInformation = () => {
   const formMik = useFormik({
     initialValues: {
-      uName: "",
+      username: "",
       password: "",
     },
-    onSubmit: (values, {}) => {
+    onSubmit: (values, { resetForm }) => {
       console.log(values);
-      handleBack();
+      resetForm();
     },
     validationSchema: yup.object({
       username: yup
         .string()
-        .min(8, "Username must be at least 8 chracters")
-        .required("Please fill the username"),
+        .min(8, "Username should be at least 8 characters")
+        .required("Please enter the username"),
       password: yup
         .string()
         .matches(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/, //char / uppercse / number / symbol / combination /digit
-          "Password combination must be at least 10 characters, include at least one lowercase letter, one uppercase letter, one number, and one special character"
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+          "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character"
         )
-        .required("Please fill the passord"),
+        .required("Please enter the password"),
     }),
   });
+
   return (
-    <Card>
-      <Heading title={"Registration"} />
+    <Card border>
       <form onSubmit={formMik.handleSubmit}>
-        <Input
-          placeholder="Username"
-          type="text"
-          value={formMik.values.uName}
-          onChange={formMik.handleChange("uName")}
-          name={"uName"}
-        />
-        {formMik.errors.uName && <Text>{formMik.errors.uName}</Text>}
-
-        <Input
-          placeholder="Password"
-          type="password"
-          value={formMik.values.password}
-          onChange={formMik.handleChange("password")}
-          name={"password"}
-        />
-
-        <Button label="Submit" type={"submit"} />
-
-        <Button label="Back" type="submit" onClick={handleBack} />
+        <Text className="text-2xl font-semibold text-center text-amber-950">
+          Account Information
+        </Text>
+        <div className="my-2">
+          <Text>Username</Text>
+          <Input
+            className="block border-neutral-400 border"
+            name={"username"}
+            value={formMik.values.username}
+            onChange={formMik.handleChange("username")}
+          />
+          {formMik.errors.username && (
+            <Text className="italic text-sm text-red-500 text-wrap">
+              {formMik.errors.username}
+            </Text>
+          )}
+        </div>
+        <div className="my-2">
+          <Text>Password</Text>
+          <Input
+            className="block border-neutral-400 border"
+            name={"password"}
+            value={formMik.values.password}
+            onChange={formMik.handleChange("password")}
+          />
+          {formMik.errors.password && (
+            <Text className="italic text-sm text-red-500 text-wrap">
+              {formMik.errors.password}
+            </Text>
+          )}
+        </div>
+        <Button label={"Submit"} type={"submit"} className={"bg-red-400"} />
       </form>
     </Card>
   );
