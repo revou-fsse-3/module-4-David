@@ -7,5 +7,4 @@ interface Props extends HTMLAttributes<HTMLParagraphElement> {
 const Text = ({ children, ...props }: Props) => {
   return <p {...props}>{children}</p>;
 };
-
 export default Text;
