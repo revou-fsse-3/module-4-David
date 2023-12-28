@@ -1,13 +1,13 @@
-import {
-  PersonalInformation,
-  AddressInformation,
-  AccountInformation,
-} from "./containers";
-import { useState } from "react";
-import { Card } from "./components";
+import React, { useState } from "react";
 import "./App.css";
+import { Button, Card } from "./components";
+import {
+  AccountInformation,
+  AddressInformation,
+  PersonalInformation,
+} from "./containers";
 
-const App = () => {
+const App: React.FC = () => {
   const [step, setStep] = useState<number>(1);
 
   const handleNext = () => {
@@ -19,26 +19,23 @@ const App = () => {
   const handleFormSubmit = () => {
     console.log();
   };
-  const decrease = () => {
-    setStep((step) => (step > 1 ? step - 1 : 1));
-  };
 
   return (
-    <div>
-      <Card>
+    <div className="app-background">
+      <Card border={false}>
         {step === 1 && (
-          <div>
+          <div className="container">
             <PersonalInformation onNext={handleNext} />
           </div>
         )}
         {step === 2 && (
-          <div>
-            <AddressInformation handleBack={decrease} onNext={handleNext} />
+          <div className="container">
+            <AddressInformation onNext={handleNext} />
           </div>
         )}
         {step === 3 && (
-          <div>
-            <AccountInformation handleBack={decrease} onNext={handleNext} />
+          <div className="container">
+            <AccountInformation />
           </div>
         )}
       </Card>
