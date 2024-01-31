@@ -1,44 +1,49 @@
-import React, { useState } from "react";
+import { RegisterContainer, LoginContainer } from "./containers";
 import "./App.css";
-import { Card } from "./components";
-import {
-  AccountInformation,
-  AddressInformation,
-  PersonalInformation,
-} from "./containers";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import PublicLayout from "./layout/PublicLayout";
+import ProtectLayout from "./layout/ProtectLayout";
+import ContextProvider from "./providers/ContextProvider";
+import { EditCategory, ListCategory } from "./containers/CategoryContainer";
 
-const App: React.FC = () => {
-  const [step, setStep] = useState<number>(1);
-
-  const handleNext = () => {
-    if (step === 3) {
-      handleFormSubmit();
-    } else setStep((prevState) => prevState + 1);
-  };
-
-  const handleFormSubmit = () => {
-    console.log();
-  };
-
+const App = () => {
+  const router = createBrowserRouter([
+    {
+      element: <PublicLayout />,
+      children: [
+        {
+          path: "/",
+          element: <RegisterContainer />,
+        },
+        {
+          path: "/login",
+          element: <LoginContainer />,
+        },
+      ],
+    },
+    {
+      path: "*",
+      element: <h1>404</h1>,
+    },
+    {
+      element: <ProtectLayout />,
+      children: [
+        {
+          path: "/protect-list-category",
+          element: <ListCategory />,
+        },
+        {
+          path: "/protect-edit-category/:id",
+          element: <EditCategory />,
+        },
+      ],
+    },
+  ]);
   return (
-    <div className="app-background">
-      <Card border={false}>
-        {step === 1 && (
-          <div className="container">
-            <PersonalInformation onNext={handleNext} />
-          </div>
-        )}
-        {step === 2 && (
-          <div className="container">
-            <AddressInformation onNext={handleNext} />
-          </div>
-        )}
-        {step === 3 && (
-          <div className="container">
-            <AccountInformation />
-          </div>
-        )}
-      </Card>
+    <div>
+      <ContextProvider>
+        <RouterProvider router={router} />
+      </ContextProvider>
     </div>
   );
 };

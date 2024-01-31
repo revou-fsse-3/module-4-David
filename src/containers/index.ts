@@ -1,3 +1,6 @@
-export { default as PersonalInformation } from "./PersonalInformation";
-export { default as AddressInformation } from "./AddressInformation";
-export { default as AccountInformation } from "./AccountInformation";
+export { default as RegisterContainer } from "./RegisterContainer";
+export { default as LoginContainer } from "./LoginContainer";
+export { default as ProfileContainer } from "./ProfileContainer";
+
+export { default as CategoryContainer } from "./CategoryContainer/ListCategory";
+export { default as ProductContainer } from "./ProductContainer";
